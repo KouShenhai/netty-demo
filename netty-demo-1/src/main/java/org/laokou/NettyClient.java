@@ -41,7 +41,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel channel) {
-
+                        channel.pipeline().addLast(new FirstClientHandler());
                     }
                 });
         conn(bootstrap,3,1);
@@ -49,7 +49,7 @@ public class NettyClient {
 
     private static void conn(Bootstrap bootstrap,final int resty,final int i) {
         // 建立连接
-        bootstrap.connect("localhost",85).addListener(f -> {
+        bootstrap.connect("localhost",8081).addListener(f -> {
             if (resty == 0) {
                 System.out.println("重试次数用完");
                 return;
