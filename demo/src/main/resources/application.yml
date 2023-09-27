@@ -2,7 +2,7 @@ spring:
   application:
     name: dubbo-service
 
-# 扩展nacos_https协议即可
+
 dubbo:
   application:
     id: ${spring.application.name}
@@ -14,15 +14,12 @@ dubbo:
   registry:
     username: nacos
     password: nacos
+    address: nacos://127.0.0.1:8848
     group: BUBBO_GROUP
     parameters:
+      ssl: true
       namespace: a61abd4c-ef96-42a5-99a1-616adee531f3
-      register-consumer-url: true
     enable-empty-protection: true
-    server: 127.0.0.1
-    port: 8848
-    protocol: nacos
-    address: nacos://1.1.1.1
   consumer:
     check: false
 server:
