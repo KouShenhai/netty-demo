@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: dubbo-service
+
+
+dubbo:
+  application:
+    id: ${spring.application.name}
+    name: ${dubbo.application.id}
+  protocol:
+    name: dubbo
+    port: -1
+    ssl-enabled: true
+  registry:
+    username: nacos
+    password: nacos
+    group: BUBBO_GROUP
+    parameters:
+      namespace: a61abd4c-ef96-42a5-99a1-616adee531f3
+      register-consumer-url: true
+    enable-empty-protection: true
+    server: 127.0.0.1
+    port: 8848
+    protocol: nacos
+    address: nacos://1.1.1.1
+  consumer:
+    check: false
+server:
+  port: 9002
