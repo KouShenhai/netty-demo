@@ -2,7 +2,7 @@ spring:
   application:
     name: dubbo-service
 
-
+# 扩展nacos_https协议即可
 dubbo:
   application:
     id: ${spring.application.name}
