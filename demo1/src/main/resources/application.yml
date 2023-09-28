@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+          url: jdbc:shardingsphere:classpath:shardingsphere.yml

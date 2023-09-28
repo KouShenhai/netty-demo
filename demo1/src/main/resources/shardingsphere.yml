@@ -1,0 +1,57 @@
+dataSources:
+  master:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://192.168.30.133:3306/user?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: laokou123
+  slave:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://192.168.30.133:3306/user?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: laokou123
+rules:
+  - !SHARDING
+    tables:
+      user:
+        actualDataNodes: master.user_$->{2022..2099}0$->{1..9},master.user_$->{2022..2099}$->{10..12}
+        tableStrategy:
+          standard:
+            shardingColumn: create_date
+            # 分片算法
+            shardingAlgorithmName: laokou_table_inline
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: laokou_snowflake
+    shardingAlgorithms:
+      laokou_table_inline:
+        # 时间范围分片算法
+        type: INTERVAL
+        props:
+          # 分片键的时间戳格式
+          datetime-pattern: "yyyy-MM-dd HH:mm:ss"
+          # 真实表的后缀格式
+          sharding-suffix-pattern: "yyyyMM"
+          # 时间分片下界值
+          datetime-lower: "2022-01-01 00:00:00"
+          # 时间分片上界值
+          datetime-upper: "2099-12-31 23:59:59"
+          # 分片间隔
+          datetime-interval-amount: 1
+          # 按月分表
+          datetime-interval-unit: "months"
+    keyGenerators:
+      laokou_snowflake:
+        type: SNOWFLAKE
+  - !READWRITE_SPLITTING
+    dataSources:
+      laokou_readwrite_data_sources:
+        staticStrategy:
+          writeDataSourceName: master
+          readDataSourceNames:
+            - slave
+        loadBalancerName: laokou_load_balance_algorithm
+    loadBalancers:
+      laokou_load_balance_algorithm:
+        type: ROUND_ROBIN

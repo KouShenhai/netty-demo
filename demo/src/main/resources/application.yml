@@ -17,9 +17,9 @@ dubbo:
     address: nacos://127.0.0.1:8848
     group: BUBBO_GROUP
     parameters:
-      ssl: true
       namespace: a61abd4c-ef96-42a5-99a1-616adee531f3
     enable-empty-protection: true
+    protocol: nacos
   consumer:
     check: false
 server:
